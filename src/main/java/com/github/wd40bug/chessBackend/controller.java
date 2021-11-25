@@ -28,10 +28,11 @@ public class controller {
     }
 
     public ChessPiece[] getStart(){
-        var pieces = new ArrayList<>(Arrays.asList(defaultLine("white", 0)));
-        pieces.addAll(Arrays.asList(pawnLine("white",1)));
-        pieces.addAll(Arrays.asList(pawnLine("black",6)));
-        pieces.addAll(Arrays.asList(defaultLine("black", 7)));
+        var pieces = new ArrayList<>(Arrays.asList(defaultLine("White", 0)));
+        pieces.addAll(Arrays.asList(pawnLine("White",1)));
+        pieces.addAll(Arrays.asList(pawnLine("Black",6)));
+        pieces.addAll(Arrays.asList(defaultLine("Black", 7)));
+//        pieces.add(new Pawn("Black",0,2));
         ChessPiece[] storage = new ChessPiece[32];
         pieces.toArray(storage);
         return storage;
