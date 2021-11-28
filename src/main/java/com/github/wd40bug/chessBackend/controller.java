@@ -32,8 +32,7 @@ public class controller {
         pieces.addAll(Arrays.asList(pawnLine("White",1)));
         pieces.addAll(Arrays.asList(pawnLine("Black",6)));
         pieces.addAll(Arrays.asList(defaultLine("Black", 7)));
-//        pieces.add(new Pawn("Black",0,2));
-        ChessPiece[] storage = new ChessPiece[32];
+        ChessPiece[] storage = new ChessPiece[pieces.size()];
         pieces.toArray(storage);
         return storage;
     }
