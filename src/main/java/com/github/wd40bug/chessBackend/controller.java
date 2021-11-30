@@ -28,7 +28,27 @@ public class controller {
         var gson = new Gson();
         return gson.toJson(board);
     }
-
+    public boolean addPiece(@RequestBody ChessPiece piece, String ID){
+        if(checkMove(piece)){
+            var board = gameMap.get(ID);
+            ArrayList<ChessPiece> arrayBoard = (ArrayList<ChessPiece>) Arrays.asList(board);
+            arrayBoard.add(piece);
+            gameMap.put(ID,arrayBoard.toArray(ChessPiece[]::new));
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public void removePiece(@RequestBody ChessPiece piece, String ID){
+        var board = gameMap.get(ID);
+        ArrayList<ChessPiece> arrayBoard = (ArrayList<ChessPiece>) Arrays.asList(board);
+        arrayBoard.remove(piece);
+        gameMap.put(ID, arrayBoard.toArray(ChessPiece[]::new));
+    }
+    public boolean checkMove(ChessPiece piece){
+        //todo add something reasonable here
+        return true;
+    }
     @CrossOrigin
     @PostMapping("/whoihate")
     public String customizeHate(@RequestBody String who){
