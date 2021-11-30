@@ -6,24 +6,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.HashMap;
 //https://reqbin.com/req/v0crmky0/rest-api-post-example
 
 @RestController
 public class controller {
     String name = "kalem";
-
+    ArrayList<String> IDList= new ArrayList<>();
+    HashMap<String,ChessPiece[]> gameMap = new HashMap<>();
     @CrossOrigin
     @GetMapping("/get_board")
-    public String getBoard(){
+    public String getBoard(@RequestParam String ID){
+        ChessPiece[] board;
+        if(!IDList.contains(ID)){
+            board = getStart();
+            gameMap.put(ID,board);
+            IDList.add(ID);
+        }else{
+            board = gameMap.get(ID);
+        }
         var gson = new Gson();
-        return gson.toJson(getStart());
+        return gson.toJson(board);
     }
 
     @CrossOrigin
     @PostMapping("/whoihate")
-    public String customizeHate(@RequestBody String name){
-        this.name = name;
+    public String customizeHate(@RequestBody String who){
+        this.name = who;
         return "Successful";
     }
 
