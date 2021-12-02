@@ -32,6 +32,8 @@ public class controller {
         if(checkMove(piece)){
             var board = gameMap.get(ID);
             ArrayList<ChessPiece> arrayBoard = (ArrayList<ChessPiece>) Arrays.asList(board);
+            arrayBoard.stream().filter(piece1 -> (piece1.getX() == piece.getX() && piece1.getY() ==
+                    piece.getY())).findFirst().ifPresent(arrayBoard::remove);
             arrayBoard.add(piece);
             gameMap.put(ID,arrayBoard.toArray(ChessPiece[]::new));
             return true;
