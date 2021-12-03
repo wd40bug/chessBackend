@@ -2,6 +2,8 @@ package com.github.wd40bug.chessBackend;
 
 import com.github.wd40bug.chessBackend.pieces.*;
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 
 @RestController
 public class controller {
+    private static final Logger logger = LogManager.getLogger(controller.class);
     String name = "kalem";
     ArrayList<String> IDList= new ArrayList<>();
     HashMap<String,ChessPiece[]> gameMap = new HashMap<>();
@@ -19,43 +22,45 @@ public class controller {
     public String getBoard(@RequestParam String ID){
         ChessPiece[] board;
         if(!IDList.contains(ID)){
+            IDList.add(ID);
+            logger.info("adding "+ID+" to ID List");
             board = getStart();
             gameMap.put(ID,board);
-            IDList.add(ID);
         }else{
+            logger.info("We already know "+ID);
             board = gameMap.get(ID);
         }
         var gson = new Gson();
         return gson.toJson(board);
     }
-    public boolean addPiece(@RequestBody ChessPiece piece, String ID){
+    @CrossOrigin
+    @PostMapping("/addPiece")
+    public boolean addPiece(@RequestBody ChessPiece piece,@RequestParam String ID){
+        logger.info(piece.toString());
         if(checkMove(piece)){
             var board = gameMap.get(ID);
-            ArrayList<ChessPiece> arrayBoard = (ArrayList<ChessPiece>) Arrays.asList(board);
+            var arrayBoard = new ArrayList<>(Arrays.asList(board));
             arrayBoard.stream().filter(piece1 -> (piece1.getX() == piece.getX() && piece1.getY() ==
                     piece.getY())).findFirst().ifPresent(arrayBoard::remove);
             arrayBoard.add(piece);
             gameMap.put(ID,arrayBoard.toArray(ChessPiece[]::new));
+
             return true;
         }else{
             return false;
         }
     }
-    public void removePiece(@RequestBody ChessPiece piece, String ID){
+    @CrossOrigin
+    @PostMapping("/removePiece")
+    public void removePiece(@RequestBody ChessPiece piece,@RequestParam String ID){
         var board = gameMap.get(ID);
-        ArrayList<ChessPiece> arrayBoard = (ArrayList<ChessPiece>) Arrays.asList(board);
+        var arrayBoard = new ArrayList<>(Arrays.asList(board));
         arrayBoard.remove(piece);
         gameMap.put(ID, arrayBoard.toArray(ChessPiece[]::new));
     }
     public boolean checkMove(ChessPiece piece){
         //todo add something reasonable here
         return true;
-    }
-    @CrossOrigin
-    @PostMapping("/whoihate")
-    public String customizeHate(@RequestBody String who){
-        this.name = who;
-        return "Successful";
     }
 
     public ChessPiece[] getStart(){

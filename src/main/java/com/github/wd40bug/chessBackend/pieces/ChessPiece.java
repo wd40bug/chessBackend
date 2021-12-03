@@ -6,7 +6,6 @@ public class ChessPiece {
     String piece;
     int x;
     int y;
-    ChessCoordinate ccoord;
     ChessPiece(){}
     ChessPiece(String color, int x, int y){
         this.color = color;
@@ -18,5 +17,15 @@ public class ChessPiece {
     }
     public int getY(){
         return this.y;
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "color='" + color + '\'' +
+                ", piece='" + piece + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
