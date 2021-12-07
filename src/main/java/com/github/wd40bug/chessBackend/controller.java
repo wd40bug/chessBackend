@@ -34,8 +34,14 @@ public class controller {
         return gson.toJson(board);
     }
     @CrossOrigin
+    @PostMapping("/testJSONsending")
+    public void testJSON(@RequestBody String pieceString, @RequestParam String ID){
+        logger.info("GOT: "+new Gson().fromJson(pieceString,ChessPiece.class)+" "+ID);
+    }
+    @CrossOrigin
     @PostMapping("/addPiece")
-    public boolean addPiece(@RequestBody ChessPiece piece,@RequestParam String ID){
+    public boolean addPiece(@RequestBody String pieceString,@RequestParam String ID){
+        var piece = new Gson().fromJson(pieceString,ChessPiece.class);
         logger.info(piece.toString());
         if(checkMove(piece)){
             var board = gameMap.get(ID);
@@ -52,7 +58,8 @@ public class controller {
     }
     @CrossOrigin
     @PostMapping("/removePiece")
-    public void removePiece(@RequestBody ChessPiece piece,@RequestParam String ID){
+    public void removePiece(@RequestBody String pieceString,@RequestParam String ID){
+        var piece = new Gson().fromJson(pieceString,ChessPiece.class);
         var board = gameMap.get(ID);
         var arrayBoard = new ArrayList<>(Arrays.asList(board));
         arrayBoard.remove(piece);
