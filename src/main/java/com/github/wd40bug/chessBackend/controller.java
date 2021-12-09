@@ -59,9 +59,11 @@ public class controller {
     @CrossOrigin
     @PostMapping("/removePiece")
     public void removePiece(@RequestBody String pieceString,@RequestParam String ID){
+        logger.info("removed "+pieceString);
         var piece = new Gson().fromJson(pieceString,ChessPiece.class);
         var board = gameMap.get(ID);
         var arrayBoard = new ArrayList<>(Arrays.asList(board));
+        logger.info(arrayBoard);
         arrayBoard.remove(piece);
         gameMap.put(ID, arrayBoard.toArray(ChessPiece[]::new));
     }
